@@ -1,12 +1,12 @@
 import express from "express";
-import { getUserByEmail, createUser } from "../db/user";
+import { getUserByEmail, createUser } from "../db/users";
 import { random, authentication } from "../helpers";
 
-export const register = (async (req: express.Request, res: express.Response) => {
+export const register = async (req: express.Request, res: express.Response) => {
   try {
-    const { userName, email, password } = req.body;
+    const { username, email, password } = req.body;
 
-    if (!userName || !email || !password) {
+    if (!username || !email || !password) {
       return res.sendStatus(400);
     }
 
@@ -17,10 +17,10 @@ export const register = (async (req: express.Request, res: express.Response) => 
     }
     const salt = random();
     const user = await createUser({
-      userName,
+      username,
       email,
       authentication: {
-        salt: salt,
+        salt,
         password: authentication(salt, password),
       },
     });
@@ -30,4 +30,5 @@ export const register = (async (req: express.Request, res: express.Response) => 
     console.log(error);
     return res.sendStatus(400);
   }
-});
+
+};

@@ -6,6 +6,8 @@ import compression from "compression";
 import cors from "cors";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
+import router from "./router";
+
 dotenv.config();
 
 // Setup Express Server
@@ -26,7 +28,11 @@ server.listen(8080, () => {
 
 // Setup MongoDB
 const MONGO_URL = process.env.MONGO_URL;
+
 mongoose.connect(MONGO_URL);
 mongoose.connection.on("error", (error: Error) => {
   console.log(error);
 });
+
+// router
+app.use("/", router());
